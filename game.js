@@ -62,17 +62,33 @@ class Game {
     }
 
     getRandomItem() {
-        const totalWeight = items.reduce((sum, item) => sum + item.chance, 0);
-        let random = Math.random() * totalWeight;
-        
-        for (const item of items) {
-            random -= item.chance;
-            if (random <= 0) {
-                return { ...item };
+    // Check for guaranteed rarities
+    for (const rarity of rarities) {
+        this.itemCounters[rarity.name]++;
+        if (this.itemCounters[rarity.name] >= rarity.guarantee) {
+            this.itemCounters[rarity.name] = 0;
+            // Get random item from this rarity
+            const rarityItems = items.filter(item => 
+                item.chance >= rarity.minChance && item.chance <= rarity.maxChance
+            );
+            if (rarityItems.length > 0) {
+                return { ...rarityItems[Math.floor(Math.random() * rarityItems.length)] };
             }
         }
-        return { ...items[0] };
     }
+    
+    // Normal random selection
+    const totalWeight = items.reduce((sum, item) => sum + item.chance, 0);
+    let random = Math.random() * totalWeight;
+    
+    for (const item of items) {
+        random -= item.chance;
+        if (random <= 0) {
+            return { ...item };
+        }
+    }
+    return { ...items[0] };
+}
 
     generateMutations() {
         const itemMutations = [];
@@ -326,4 +342,5 @@ class Game {
 // Start the game when page loads
 window.addEventListener('load', () => {
     new Game();
+
 });
