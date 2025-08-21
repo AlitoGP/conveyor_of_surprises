@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conveyor Belt Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            height: 80px;
+        }
+
+        .coins {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .slots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .slot {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .slot.occupied {
+            border-color: #00ff00;
+            background: rgba(0,255,0,0.1);
+        }
+
+        .slot img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .slot-item-name {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        .slot-cps {
+            font-size: 8px;
+            color: #ffd700;
+        }
+
+        .events {
+            min-width: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .event {
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .event-tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.9);
+            padding: 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: none;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .event-name {
+            color: white;
+            font-weight: bold;
+        }
+
+        .event-description {
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        .conveyor {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(to right, #333, #555, #333);
+            border: 3px solid #666;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        .conveyor-belt {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 20px,
+                rgba(255,255,255,0.1) 20px,
+                rgba(255,255,255,0.1) 22px
+            );
+            animation: moveBelt 2s linear infinite;
+        }
+
+        @keyframes moveBelt {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .item {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            height: 140px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #666;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .item:hover {
+            transform: translateY(-50%) scale(1.05);
+            border-color: #00ff00;
+        }
+
+        .item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+
+        .item-name {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2px;
+        }
+
+        .item-rarity {
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .item-cps {
+            font-size: 12px;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            font-size: 14px;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .item-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            padding: 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: none;
+            z-index: 1000;
+        }
+
+        .item:hover .item-tooltip {
+            display: block;
+        }
+
+        .mutation {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .insufficient-funds {
+            border-color: #ff0000 !important;
+            background: rgba(255,0,0,0.1) !important;
+        }
+
+        .slots-full {
+            border-color: #ff8800 !important;
+            background: rgba(255,136,0,0.1) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="coins">
+            Coins: <span id="coin-count">10</span>
+        </div>
+        <div class="slots" id="slots">
+            <div class="slot" data-slot="0"></div>
+            <div class="slot" data-slot="1"></div>
+            <div class="slot" data-slot="2"></div>
+            <div class="slot" data-slot="3"></div>
+            <div class="slot" data-slot="4"></div>
+        </div>
+        <div class="events" id="events">
+        </div>
+    </div>
+
+    <div class="conveyor" id="conveyor">
+        <div class="conveyor-belt"></div>
+    </div>
+
+    <script src="rarities.js"></script>
+    <script src="mutations.js"></script>
+    <script src="events.js"></script>
+    <script src="items.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
