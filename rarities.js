@@ -15,8 +15,8 @@ const rarities = [
         name: "Rare",
         minChance: 20,
         maxChance: 99,
-        color: "#add8e6", // Light blue
-        guarantee: 10
+        color: "#add8e6" // Light blue
     }
 
 ];
+
