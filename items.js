@@ -9,14 +9,14 @@ const items = [
     {
         name: "Cat",
         image: "https://cdn-icons-png.flaticon.com/512/8277/8277431.png", 
-        chance: 33, // Uncommon rarity (6-19 range)
+        chance: 24, // Uncommon rarity (6-19 range)
         cps: 4,
         price: 30
     },
     {
         name: "Rabbit",
         image: "https://cdn-icons-png.flaticon.com/512/10806/10806489.png",
-        chance: 20, // Rare rarity (20-99 range)
+        chance: 15, // Rare rarity (20-99 range)
         cps: 25,
         price: 180
     }
