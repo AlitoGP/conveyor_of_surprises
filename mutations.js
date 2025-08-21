@@ -5,5 +5,13 @@ const mutations = [
         chance: 0.1, // 10% chance
         multiplier: 1.5, // 50% bonus to CPS
         eventRequired: "Rain" // Only appears during Rain events
+    },
+    {
+        name: "Gold",
+        color: "#FFD700",
+        chance: 0.05, 
+        multiplier: 2 
+
     }
+
 ];
