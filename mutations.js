@@ -7,11 +7,32 @@ const mutations = [
         eventRequired: "Rain" // Only appears during Rain events
     },
     {
+        name: "Wild",
+        color: "#d1bd92",
+        chance: 0.15, 
+        multiplier: 1.25
+
+    },
+    {
         name: "Gold",
-        color: "#FFD700",
+        color: "#ffd700",
         chance: 0.05, 
         multiplier: 2 
 
+    },
+    {
+        name: "Diamond",
+        color: "#b9f2ff",
+        chance: 0.025, 
+        multiplier: 3
+    },
+    {
+        name: "Ruby",
+        color: "#9b1113",
+        chance: 0.01, 
+        multiplier: 5
     }
+
+    
 
 ];
