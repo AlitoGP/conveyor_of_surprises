@@ -5,12 +5,6 @@ class Game {
         this.activeEvents = [];
         this.conveyorItems = [];
         this.nextItemId = 0;
-        this.itemCounters = {}; // Add this line
-    
-        // Initialize counters for each rarity
-        rarities.forEach(rarity => {
-            this.itemCounters[rarity.name] = 0;
-        });
         
         this.loadGame();
         this.init();
@@ -27,7 +21,6 @@ class Game {
         setInterval(() => this.checkEvents(), 3000); // Check for events every 3 seconds
         setInterval(() => this.updateEvents(), 1000); // Update event timers
         setInterval(() => this.saveGame(), 5000); // Auto-save every 5 seconds
-        setInterval(() => this.applyMutationsToConveyorItems(), 1000); // Apply mutations every second
     }
 
     setupEventListeners() {
@@ -68,39 +61,18 @@ class Game {
         document.getElementById('conveyor').appendChild(item.element);
     }
 
-   getRandomItem() {
-    // Increment all rarity counters first
-    rarities.forEach(rarity => {
-        this.itemCounters[rarity.name]++;
-    });
-    
-    // Check for guaranteed rarities
-    for (const rarity of rarities) {
-        if (this.itemCounters[rarity.name] >= rarity.guarantee) {
-            this.itemCounters[rarity.name] = 0;
-            // Get random item from this rarity
-            const rarityItems = items.filter(item => 
-                item.chance >= rarity.minChance && item.chance <= rarity.maxChance
-            );
-            if (rarityItems.length > 0) {
-                return { ...rarityItems[Math.floor(Math.random() * rarityItems.length)] };
+    getRandomItem() {
+        const totalWeight = items.reduce((sum, item) => sum + item.chance, 0);
+        let random = Math.random() * totalWeight;
+        
+        for (const item of items) {
+            random -= item.chance;
+            if (random <= 0) {
+                return { ...item };
             }
         }
+        return { ...items[0] };
     }
-    
-    // Normal random selection
-    const totalWeight = items.reduce((sum, item) => sum + item.chance, 0);
-    let random = Math.random() * totalWeight;
-    
-    for (const item of items) {
-        random -= item.chance;
-        if (random <= 0) {
-            return { ...item };
-        }
-    }
-    return { ...items[0] };
-}
-    
 
     generateMutations() {
         const itemMutations = [];
@@ -120,27 +92,6 @@ class Game {
         
         return itemMutations;
     }
-    
-    applyMutationsToConveyorItems() {
-    this.conveyorItems.forEach(item => {
-        const newMutations = this.generateMutations();
-        newMutations.forEach(mutation => {
-            // Only add if not already present
-            if (!item.mutations.some(existing => existing.name === mutation.name)) {
-                item.mutations.push(mutation);
-                
-                // Update the displayed CPS and tooltip
-                const totalCps = this.calculateCPS(item.cps, item.mutations);
-                item.element.querySelector('.item-cps').textContent = `${totalCps} c/s`;
-                item.element.querySelector('.item-tooltip').innerHTML = 
-                    item.mutations.length > 0 ? 
-                        item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
-                        : 'No mutations';
-            }
-        });
-    });
-}
-
 
     createItemElement(itemData, itemMutations) {
         const element = document.createElement('div');
@@ -337,36 +288,22 @@ class Game {
         document.getElementById('coin-count').textContent = Math.floor(this.coins);
 
         // Update slots
-        // Update slots
-document.querySelectorAll('.slot').forEach((slot, index) => {
-    const item = this.equippedItems[index];
-    
-    if (item) {
-        slot.className = 'slot occupied';
-        slot.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <div class="slot-item-name">${item.name}</div>
-            <div class="slot-cps">${item.totalCps} c/s</div>
-            <div class="slot-tooltip" style="position: fixed; background: rgba(0,0,0,0.9); padding: 8px; border-radius: 4px; display: none; z-index: 1000; pointer-events: none;">
-                ${item.mutations.length > 0 ? 
-                    item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
-                    : 'No mutations'}
-            </div>
-        `;
-        
-        // Add tooltip events
-        const tooltip = slot.querySelector('.slot-tooltip');
-        slot.addEventListener('mouseenter', () => tooltip.style.display = 'block');
-        slot.addEventListener('mousemove', (e) => {
-            tooltip.style.left = (e.clientX - 100) + 'px';
-            tooltip.style.top = e.clientY + 10 + 'px';
+        document.querySelectorAll('.slot').forEach((slot, index) => {
+            const item = this.equippedItems[index];
+            
+            if (item) {
+                slot.className = 'slot occupied';
+                slot.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="slot-item-name">${item.name}</div>
+                    <div class="slot-cps">${item.totalCps} c/s</div>
+                `;
+            } else {
+                slot.className = 'slot';
+                slot.innerHTML = '';
+            }
         });
-        slot.addEventListener('mouseleave', () => tooltip.style.display = 'none');
-    } else {
-        slot.className = 'slot';
-        slot.innerHTML = '';
     }
-});
 
     saveGame() {
         const gameData = {
