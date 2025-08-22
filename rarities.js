@@ -13,12 +13,25 @@ const rarities = [
     },
     {
         name: "Rare",
-        minChance: 10,
+        minChance: 8,
         maxChance: 19,
         color: "#add8e6" // Light blue
+    },
+    {
+        name: "Epic",
+        minChance: 2,
+        maxChance: 7,
+        color: "#cc8899" 
+    },
+    {
+        name: "Legendary",
+        minChance: 0.75,
+        maxChance: 1,
+        color: "#ffae2a" 
     }
 
 ];
+
 
 
 
