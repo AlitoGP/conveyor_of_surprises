@@ -119,9 +119,11 @@ class Game {
             if (!item.mutations.some(existing => existing.name === mutation.name)) {
                 item.mutations.push(mutation);
                 
-                // Update the displayed CPS and tooltip
+                // Update the displayed CPS, price and tooltip
                 const totalCps = this.calculateCPS(item.cps, item.mutations);
+                const totalPrice = this.calculatePrice(item.price, item.mutations);
                 item.element.querySelector('.item-cps').textContent = `${totalCps} c/s`;
+                item.element.querySelector('.item-price').textContent = `$${totalPrice}`;
                 item.element.querySelector('.item-tooltip').innerHTML = 
                     item.mutations.length > 0 ? 
                         item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
