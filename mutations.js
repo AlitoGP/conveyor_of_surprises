@@ -9,30 +9,31 @@ const mutations = [
     {
         name: "Wild",
         color: "#d1bd92",
-        chance: 0.15, 
+        chance: 0.1, 
         multiplier: 1.25
 
     },
     {
         name: "Gold",
         color: "#ffd700",
-        chance: 0.05, 
+        chance: 0.02, 
         multiplier: 2 
 
     },
     {
         name: "Diamond",
         color: "#b9f2ff",
-        chance: 0.025, 
+        chance: 0.0075, 
         multiplier: 3
     },
     {
         name: "Ruby",
         color: "#9b1113",
-        chance: 0.01, 
+        chance: 0.00375, 
         multiplier: 5
     }
 
     
 
 ];
+
