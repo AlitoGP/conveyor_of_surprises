@@ -322,38 +322,40 @@ class Game {
     updateDisplay() {
         document.getElementById('coin-count').textContent = Math.floor(this.coins);
 
-        // Update slots
-        // Update slots
-document.querySelectorAll('.slot').forEach((slot, index) => {
-    const item = this.equippedItems[index];
+            // Update slots
+            // Update slots
+        document.querySelectorAll('.slot').forEach((slot, index) => {
+        const item = this.equippedItems[index];
     
-    if (item) {
-        slot.className = 'slot occupied';
-        slot.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <div class="slot-item-name">${item.name}</div>
-            <div class="slot-cps">${item.totalCps} c/s</div>
-            <div class="slot-tooltip" style="position: fixed; background: rgba(0,0,0,0.9); padding: 8px; border-radius: 4px; display: none; z-index: 1000; pointer-events: none;">
-                ${item.mutations.length > 0 ? 
-                    item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
-                    : 'No mutations'}
-            </div>
-        `;
+        if (item) {
+            slot.className = 'slot occupied';
+            slot.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="slot-item-name">${item.name}</div>
+                <div class="slot-cps">${item.totalCps} c/s</div>
+                <div class="slot-tooltip" style="position: fixed; background: rgba(0,0,0,0.9); padding: 8px; border-radius: 4px; display: none; z-index: 1000; pointer-events: none;">
+                    ${item.mutations.length > 0 ? 
+                        item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
+                        : 'No mutations'}
+                </div>
+            `;
         
-        // Add tooltip events
-        const tooltip = slot.querySelector('.slot-tooltip');
-        slot.addEventListener('mouseenter', () => tooltip.style.display = 'block');
-        slot.addEventListener('mousemove', (e) => {
-            tooltip.style.left = (e.clientX - 100) + 'px';
-            tooltip.style.top = e.clientY + 10 + 'px';
-        });
-        slot.addEventListener('mouseleave', () => tooltip.style.display = 'none');
-    } else {
-        slot.className = 'slot';
-        slot.innerHTML = '';
-    }
-});
+            // Add tooltip events
+            const tooltip = slot.querySelector('.slot-tooltip');
+            slot.addEventListener('mouseenter', () => tooltip.style.display = 'block');
+            slot.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.clientX - 100) + 'px';
+                tooltip.style.top = e.clientY + 10 + 'px';
+            });
+            slot.addEventListener('mouseleave', () => tooltip.style.display = 'none');
+        } else {
+            slot.className = 'slot';
+            slot.innerHTML = '';
+        }
+    });
+}
 
+        
     saveGame() {
         const gameData = {
             coins: this.coins,
