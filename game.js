@@ -51,7 +51,7 @@ class Game {
     }
 
     spawnItem() {
-        if (this.conveyorItems.length >= 10) return;
+        if (this.conveyorItems.length >= 16) return;
 
         const itemData = this.getRandomItem();
         if (!itemData) return; // Don't spawn if getRandomItem failed
