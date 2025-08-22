@@ -9,6 +9,15 @@ const events = [
         duration: 180 // 3 minutes in seconds
     },
     {
+        name: "Tsunami",
+        description: "100% Soaked chance",
+        image: "https://cdn-icons-png.flaticon.com/512/1146/1146860.png",
+        audio: "sfx/rain.ogg",
+        chance: 0.03, 
+        spawnInterval: 8,
+        duration: 10 
+    },
+    {
         name: "Hailstorm",
         description: "10% Icy chance",
         image: "https://cdn-icons-png.flaticon.com/512/9210/9210004.png",
