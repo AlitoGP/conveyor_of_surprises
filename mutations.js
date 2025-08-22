@@ -18,7 +18,7 @@ const mutations = [
     {
         name: "Wild",
         color: "#d1bd92",
-        chance: 0.1, 
+        chance: 0.075, 
         multiplier: 1.25,
         priceMultiplier: 1,
 
@@ -26,7 +26,7 @@ const mutations = [
     {
         name: "Gold",
         color: "#ffd700",
-        chance: 0.02, 
+        chance: 0.01, 
         multiplier: 2,
         priceMultiplier: 1.5,
 
@@ -34,14 +34,14 @@ const mutations = [
     {
         name: "Diamond",
         color: "#b9f2ff",
-        chance: 0.0075, 
+        chance: 0.00375, 
         multiplier: 3,
         priceMultiplier: 2,
     },
     {
         name: "Ruby",
         color: "#9b1113",
-        chance: 0.00375, 
+        chance: 0.0018, 
         multiplier: 5,
         priceMultiplier: 3,
     },
