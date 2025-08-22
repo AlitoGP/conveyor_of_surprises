@@ -6,5 +6,14 @@ const events = [
         audio: "sfx/rain.ogg",
         chance: 0.03, // 3% chance every 3 seconds
         duration: 180 // 3 minutes in seconds
+    },
+    {
+        name: "Heatwave",
+        description: "10% Overheated chance",
+        image: "https://cdn-icons-png.flaticon.com/512/6468/6468088.png",
+        audio: "sfx/hw.ogg",
+        chance: 0.02, // 
+        duration: 120
     }
+
 ];
