@@ -26,7 +26,15 @@ const items = [
         chance: 6, 
         cps: 100,
         price: 1250
+    },
+    {
+        name: "Dragon",
+        image: "https://cdn-icons-png.flaticon.com/512/5169/5169269.png",
+        chance: 1, 
+        cps: 1000,
+        price: 18000
     }
 
 ];
+
 
