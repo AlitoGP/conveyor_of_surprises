@@ -7,6 +7,13 @@ const mutations = [
         eventRequired: "Rain" // Only appears during Rain events
     },
     {
+        name: "Overheated",
+        color: "#ff3f34",
+        chance: 0.1, 
+        multiplier: 1.75,
+        eventRequired: "Heatwave" 
+    },
+    {
         name: "Wild",
         color: "#d1bd92",
         chance: 0.1, 
@@ -36,4 +43,5 @@ const mutations = [
     
 
 ];
+
 
