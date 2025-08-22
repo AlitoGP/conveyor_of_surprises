@@ -52,6 +52,15 @@ const events = [
         chance: 0.01, 
         spawnInterval: 7,
         duration: 300
+    },
+    {
+        name: "Fallout",
+        description: "20% Radioactive chance",
+        image: "",
+        audio: "sfx/fallout.ogg",
+        chance: 0.02, 
+        spawnInterval: 8,
+        duration: 120
     }
 
 ];
