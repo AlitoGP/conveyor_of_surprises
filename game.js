@@ -5,6 +5,12 @@ class Game {
         this.activeEvents = [];
         this.conveyorItems = [];
         this.nextItemId = 0;
+        this.itemCounters = {}; // Add this line
+    
+        // Initialize counters for each rarity
+        rarities.forEach(rarity => {
+            this.itemCounters[rarity.name] = 0;
+        });
         
         this.loadGame();
         this.init();
