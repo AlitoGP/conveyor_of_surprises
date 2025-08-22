@@ -114,22 +114,27 @@ class Game {
     applyMutationsToConveyorItems() {
     this.conveyorItems.forEach(item => {
         const newMutations = this.generateMutations();
+        let mutationsAdded = false;
+        
         newMutations.forEach(mutation => {
             // Only add if not already present
             if (!item.mutations.some(existing => existing.name === mutation.name)) {
                 item.mutations.push(mutation);
-                
-                // Update the displayed CPS, price and tooltip
-                const totalCps = this.calculateCPS(item.cps, item.mutations);
-                const totalPrice = this.calculatePrice(item.price, item.mutations);
-                item.element.querySelector('.item-cps').textContent = `${totalCps} c/s`;
-                item.element.querySelector('.item-price').textContent = `$${totalPrice}`;
-                item.element.querySelector('.item-tooltip').innerHTML = 
-                    item.mutations.length > 0 ? 
-                        item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
-                        : 'No mutations';
+                mutationsAdded = true;
             }
         });
+        
+        // Only update display if mutations were actually added
+        if (mutationsAdded) {
+            const totalCps = this.calculateCPS(item.cps, item.mutations);
+            const totalPrice = this.calculatePrice(item.price, item.mutations);
+            item.element.querySelector('.item-cps').textContent = `${totalCps} c/s`;
+            item.element.querySelector('.item-price').textContent = `$${totalPrice}`;
+            item.element.querySelector('.item-tooltip').innerHTML = 
+                item.mutations.length > 0 ? 
+                    item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
+                    : 'No mutations';
+        }
     });
 }
 
