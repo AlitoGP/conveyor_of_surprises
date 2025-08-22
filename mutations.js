@@ -38,6 +38,41 @@ const mutations = [
         color: "#9b1113",
         chance: 0.00375, 
         multiplier: 5
+    },
+    {
+        name: "Twisted",
+        color: "#d0deec",
+        chance: 0.15, 
+        multiplier: 2.5,
+        eventRequired: "Tornado"
+    },
+    {
+        name: "Burnt",
+        color: "#592b1f",
+        chance: 0.1, 
+        multiplier: 0.95,
+        eventRequired: "Masterchef"
+    },
+    {
+        name: "Sauteed",
+        color: "#a69085",
+        chance: 0.1, 
+        multiplier: 1.4,
+        eventRequired: "Masterchef"
+    },
+    {
+        name: "Horror",
+        color: "#990000",
+        chance: 0.08, 
+        multiplier: 3.5,
+        eventRequired: "Blood Moon"
+    },
+    {
+        name: "Icy",
+        color: "#b9e8ea",
+        chance: 0.1, 
+        multiplier: 1.5,
+        eventRequired: "Hailstorm"
     }
 
     
