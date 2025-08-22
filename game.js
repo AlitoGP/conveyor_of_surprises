@@ -69,6 +69,11 @@ class Game {
     }
 
    getRandomItem() {
+    // Increment all rarity counters first
+    rarities.forEach(rarity => {
+        this.itemCounters[rarity.name]++;
+    });
+    
     // Check for guaranteed rarities
     for (const rarity of rarities) {
         if (this.itemCounters[rarity.name] >= rarity.guarantee) {
@@ -82,11 +87,6 @@ class Game {
             }
         }
     }
-    
-    // Increment counters for all rarities
-    rarities.forEach(rarity => {
-        this.itemCounters[rarity.name]++;
-    });
     
     // Normal random selection
     const totalWeight = items.reduce((sum, item) => sum + item.chance, 0);
