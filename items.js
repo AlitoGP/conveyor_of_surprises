@@ -17,8 +17,16 @@ const items = [
         name: "Rabbit",
         image: "https://cdn-icons-png.flaticon.com/512/10806/10806489.png",
         chance: 15, // Rare rarity (20-99 range)
-        cps: 25,
+        cps: 20,
         price: 180
+    },
+    {
+        name: "Bear",
+        image: "https://cdn-icons-png.flaticon.com/512/2938/2938228.png",
+        chance: 6, 
+        cps: 100,
+        price: 1250
     }
 
 ];
+
