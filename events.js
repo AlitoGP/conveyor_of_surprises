@@ -39,7 +39,7 @@ const events = [
         name: "Blood Moon",
         description: "12% Horror chance",
         image: "https://png.pngtree.com/png-clipart/20230309/ourmid/pngtree-full-blood-moon-png-image_6634656.png",
-        audio: "sfx/bm.ogg",
+        audio: "sfx/fahnenflucht.mp3",
         chance: 0.08, 
         spawnInterval: 30,
         duration: 120
@@ -64,5 +64,6 @@ const events = [
     }
 
 ];
+
 
 
