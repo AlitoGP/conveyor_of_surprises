@@ -77,9 +77,14 @@
         }
 
         .events {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             min-width: 150px;
             max-height: 200px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
         }
 
         .event {
@@ -241,9 +246,9 @@
             <div class="slot" data-slot="3"></div>
             <div class="slot" data-slot="4"></div>
         </div>
-        <div class="events" id="events">
-        </div>
     </div>
+
+    <div class="events" id="events"></div>
 
     <div class="conveyor" id="conveyor">
         <div class="conveyor-belt"></div>
@@ -257,4 +262,5 @@
 </body>
 
 </html>
+
 
