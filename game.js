@@ -24,10 +24,13 @@ class Game {
         setInterval(() => this.spawnItem(), 3000); // Every 3 seconds
         setInterval(() => this.updateConveyor(), 50); // Smooth movement
         setInterval(() => this.generateCoins(), 1000); // Every second for coins
-        setInterval(() => this.checkEvents(), 3000); // Check for events every 3 seconds
         setInterval(() => this.updateEvents(), 1000); // Update event timers
         setInterval(() => this.saveGame(), 5000); // Auto-save every 5 seconds
         setInterval(() => this.applyMutationsToConveyorItems(), 1000); // Apply mutations every second
+
+        events.forEach(event => {
+            setInterval(() => this.checkEvent(event), event.spawnInterval * 1000);
+        });
     }
 
     setupEventListeners() {
@@ -244,13 +247,11 @@ class Game {
         this.updateDisplay();
     }
 
-    checkEvents() {
-        for (const eventData of events) {
-            const isActive = this.activeEvents.some(event => event.name === eventData.name);
-            
-            if (!isActive && Math.random() < eventData.chance) {
-                this.startEvent(eventData);
-            }
+    checkEvent(eventData) {
+        const isActive = this.activeEvents.some(event => event.name === eventData.name);
+    
+        if (!isActive && Math.random() < eventData.chance) {
+            this.startEvent(eventData);
         }
     }
 
