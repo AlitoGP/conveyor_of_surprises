@@ -7,7 +7,13 @@ class Game {
         this.nextItemId = 0;
         
         this.loadGame();
-        this.init();
+
+            // Wait for all scripts to load before initializing
+        if (typeof rarities !== 'undefined') {
+            this.init();
+        } else {
+            setTimeout(() => this.init(), 100);
+        }
     }
 
     init() {
@@ -45,16 +51,18 @@ class Game {
     }
 
     spawnItem() {
-        if (this.conveyorItems.length >= 10) return; // Limit items on conveyor
+        if (this.conveyorItems.length >= 10) return;
 
         const itemData = this.getRandomItem();
+        if (!itemData) return; // Don't spawn if getRandomItem failed
+    
         const mutations = this.generateMutations();
-        
+    
         const item = {
             id: this.nextItemId++,
             ...itemData,
             mutations: mutations,
-            position: -130, // Start off-screen
+            position: -130,
             element: this.createItemElement(itemData, mutations)
         };
 
@@ -63,9 +71,15 @@ class Game {
     }
 
     getRandomItem() {
+        // Fallback if items array is empty or undefined
+        if (!items || items.length === 0) {
+            console.error('Items array not loaded');
+            return null;
+        }
+    
         const totalWeight = items.reduce((sum, item) => sum + item.chance, 0);
         let random = Math.random() * totalWeight;
-        
+    
         for (const item of items) {
             random -= item.chance;
             if (random <= 0) {
