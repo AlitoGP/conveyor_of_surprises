@@ -131,19 +131,28 @@ class Game {
     });
 }
 
+    calculatePrice(basePrice, itemMutations) {
+        let multiplier = 1;
+        for (const mutation of itemMutations) {
+            multiplier *= mutation.priceMultiplier || 1;
+        }
+        return Math.round(basePrice * multiplier);
+    }
+
     createItemElement(itemData, itemMutations) {
         const element = document.createElement('div');
         element.className = 'item';
         
         const rarity = this.getItemRarity(itemData.chance);
         const totalCps = this.calculateCPS(itemData.cps, itemMutations);
+        const totalPrice = this.calculatePrice(itemData.price, itemMutations);
         
         element.innerHTML = `
             <img src="${itemData.image}" alt="${itemData.name}">
             <div class="item-name">${itemData.name}</div>
             <div class="item-rarity" style="color: ${rarity.color}">${rarity.name}</div>
             <div class="item-cps">${totalCps} c/s</div>
-            <div class="item-price">$${itemData.price}</div>
+            <div class="item-price">$${totalPrice}</div>
             <div class="item-tooltip">
                 ${itemMutations.length > 0 ? 
                     itemMutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
@@ -175,7 +184,8 @@ class Game {
 
     buyItem(itemData, itemMutations, element) {
         // Check if player has enough coins
-        if (this.coins < itemData.price) {
+        const totalPrice = this.calculatePrice(itemData.price, itemMutations);
+        if (this.coins < totalPrice) {
             element.classList.add('insufficient-funds');
             setTimeout(() => element.classList.remove('insufficient-funds'), 1000);
             return;
@@ -190,13 +200,14 @@ class Game {
         }
 
         // Purchase item
-        this.coins -= itemData.price;
+        this.coins -= totalPrice;
         const totalCps = this.calculateCPS(itemData.cps, itemMutations);
         
         this.equippedItems[emptySlot] = {
             ...itemData,
             mutations: itemMutations,
-            totalCps: totalCps
+            totalCps: totalCps,
+            totalPrice: totalPrice
         };
 
         // Remove from conveyor
