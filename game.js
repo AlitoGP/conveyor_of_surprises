@@ -75,16 +75,6 @@ class Game {
         return { ...items[0] };
     }
     
-    updateConveyorItemDisplay(item) {
-    const rarity = this.getItemRarity(item.chance);
-    const totalCps = this.calculateCPS(item.cps, item.mutations);
-    
-    item.element.querySelector('.item-cps').textContent = `${totalCps} c/s`;
-    item.element.querySelector('.item-tooltip').innerHTML = 
-        item.mutations.length > 0 ? 
-            item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
-            : 'No mutations';
-}
 
     generateMutations() {
         const itemMutations = [];
@@ -112,11 +102,16 @@ class Game {
             // Only add if not already present
             if (!item.mutations.some(existing => existing.name === mutation.name)) {
                 item.mutations.push(mutation);
+                
+                // Update the displayed CPS and tooltip
+                const totalCps = this.calculateCPS(item.cps, item.mutations);
+                item.element.querySelector('.item-cps').textContent = `${totalCps} c/s`;
+                item.element.querySelector('.item-tooltip').innerHTML = 
+                    item.mutations.length > 0 ? 
+                        item.mutations.map(mut => `<span class="mutation" style="color: ${mut.color}">${mut.name}</span>`).join(' + ') 
+                        : 'No mutations';
             }
         });
-        
-        // Update the item display
-        this.updateConveyorItemDisplay(item);
     });
 }
 
