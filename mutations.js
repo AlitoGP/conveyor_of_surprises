@@ -8,7 +8,7 @@ const mutations = [
         eventRequired: "Rain" // Only appears during Rain events
     },
     {
-        name: "Wet",
+        name: "Soaked",
         color: "#4169e1", 
         chance: 0.1, 
         multiplier: 1.6, 
@@ -105,6 +105,7 @@ const mutations = [
     
 
 ];
+
 
 
 
